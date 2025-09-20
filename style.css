@@ -36,3 +36,55 @@ footer{padding:20px;color:var(--muted);text-align:center;border-top:1px solid va
 .fab{border-radius:999px;min-width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #2f2f2f;background:#1a1a1a}
 .fab.small{min-width:36px;height:36px;font-size:16px}
 #bmFloat{position:fixed;right:16px;bottom:84px;z-index:10;border:1px solid #2f2f2f;background:#1a1a1a}
+
+/* === 標籤修正與橫條隱藏 === */
+#tagBtn, .tag-fab, .pin-badge {
+  position: fixed !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 1000 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.tag-strip, .tag-bar, .reading-tag-strip, .chapter-strip {
+  display: none !important;
+}
+
+/* 設定按鈕固定右上＆去除底色/陰影 */
+#settingsBtn,
+.settings-fab,
+.btn-settings {
+  position: fixed !important;
+  right: 12px !important;
+  top: 12px !important;
+  z-index: 1000 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* 再補一些可能的標籤 class，避免漏網 */
+.tag-btn,
+.pin-dot {
+  position: fixed !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 1000 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* 關掉任何殘留的橫條 */
+.tag-strip,
+.tag-bar,
+.reading-tag-strip,
+.chapter-strip {
+  display: none !important;
+}
