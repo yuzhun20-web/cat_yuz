@@ -1,0 +1,45 @@
+
+/* === Ronin non-intrusive overrides: keep original layout === */
+:root{ --fs:18px; }
+html,body{ font-size:var(--fs); }
+
+/* Themes (apply by body class) */
+body.dark{    --bg:#000;    --fg:#EAEAEA; --strong:#fff; --sheet-bg:#1a1a1a; --sheet-fg:#fff; --chip:#121212; }
+body.eyecare{ --bg:#121212; --fg:#E0E0E0; --strong:#fff; --sheet-bg:#171717; --sheet-fg:#fff; --chip:#1b1b1b; }
+body.paper{   --bg:#FAF9F6; --fg:#333;    --strong:#000; --sheet-bg:#fff;    --sheet-fg:#111; --chip:#fff; }
+
+/* Apply tokens without breaking existing colors; only fill if transparent-ish */
+body{ background:var(--bg); color:var(--fg); }
+
+/* Strong contrast for key headings */
+h1,h2,h3,.brand,.app-title,.page-title,.section-title,.article-title{ color:var(--strong)!important; }
+
+/* Right-side tags (only when body has .tags-right) */
+.tags-right .tabs,.tags-right .tabbar,.tags-right .tags,.tags-right .filters,.tags-right .chipbar{
+  position:fixed; right:10px; top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; gap:.5rem; z-index:20;
+}
+.tags-right .tab,.tags-right .chip,.tags-right .tag{ padding:.4rem .8rem; border-radius:999px; }
+
+/* Remove stripes/borders that block text in tabs/settings overlay (not touching your core styles) */
+.tabs,.tabbar,.tags,.filters,.chipbar{ background:transparent!important; background-image:none!important; box-shadow:none!important; border:none!important; }
+
+/* Floating gear */
+.rn-gear{ position:fixed; right:14px; top:14px; z-index:30;
+  border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.25); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  color:var(--strong); border-radius:16px; padding:8px 14px; font-weight:800;
+}
+
+/* Bottom sheet for settings (overlay only) */
+.rn-sheet{
+  position:fixed; left:0; right:0; bottom:0; transform:translateY(110%);
+  transition:transform .28s ease; z-index:9999;
+  background:var(--sheet-bg)!important; color:var(--sheet-fg)!important;
+  border-top-left-radius:18px; border-top-right-radius:18px;
+  box-shadow:0 -10px 40px rgba(0,0,0,.35);
+  padding:18px 18px calc(18px + env(safe-area-inset-bottom));
+}
+.rn-sheet.show{ transform:translateY(0); }
+.rn-row{ display:flex; gap:12px; flex-wrap:wrap; margin:10px 0 16px; }
+.rn-chip,.rn-btn{ border-radius:18px; padding:10px 16px; font-weight:700; border:1px solid rgba(255,255,255,.14); background:var(--chip)!important; color:var(--sheet-fg)!important; }
+.rn-done{ position:absolute; right:14px; top:12px; padding:8px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.2); }
