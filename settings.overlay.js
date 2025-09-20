@@ -1,4 +1,4 @@
-// 浪人閱讀：不改你版面，只是插入一顆齒輪和面板（r- 命名空間）
+// 浪人閱讀：浮動設定面板（r- 命名空間）
 (function(){
   const getMode=()=>localStorage.getItem('readingMode')||'eyecare';
   const getFS=()=>parseInt(localStorage.getItem('readingFontSize')||'18',10);
@@ -7,15 +7,12 @@
   function applyFS(px){ document.documentElement.style.setProperty('--fs',(px||getFS())+'px'); }
 
   function mount(){
-    // 預先套用既有設定
     applyMode(); applyFS();
 
-    // 浮動齒輪
     const fab=document.createElement('button');
     fab.className='r-fab'; fab.id='rOpen'; fab.textContent='⚙️ 設定'; fab.type='button';
     document.body.appendChild(fab);
 
-    // 面板 + 遮罩
     const modal=document.createElement('div'); modal.className='r-modal'; modal.id='rModal'; modal.hidden=true;
     modal.innerHTML=`
       <div class="r-panel" role="dialog" aria-modal="true" aria-label="外觀設定">
@@ -63,6 +60,5 @@
     });
   }
 
-  // 安全初始化
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', mount); } else { mount(); }
 })();

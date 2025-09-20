@@ -1,5 +1,6 @@
 /* 浪人閱讀：浮動設定鈕 + 設定面板（命名空間 r-） */
-.r-fab{position:fixed;top:84px;right:14px;z-index:9999;padding:.5rem .9rem;border-radius:999px;border:1px solid currentColor;background:rgba(0,0,0,.35);backdrop-filter:blur(6px)}
+.r-fab{position:fixed;top:20px;right:12px;z-index:9999;padding:.5rem .9rem;border-radius:999px;border:1px solid currentColor;background:rgba(0,0,0,.35);backdrop-filter:blur(6px)}
+@media (max-width:390px){.r-fab{top:16px;right:8px}}
 body.lightgray .r-fab, body.paper .r-fab{background:rgba(255,255,255,.75)}
 .r-modal{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:center;z-index:9998}
 .r-modal[hidden]{display:none}
@@ -9,7 +10,7 @@ body.lightgray .r-fab, body.paper .r-fab{background:rgba(255,255,255,.75)}
 .r-val{min-width:2.6em;text-align:center}
 body.lightgray .r-panel{background:#f5f5f5;color:#222;border-color:rgba(0,0,0,.08)}
 body.paper .r-panel{background:#faf9f6;color:#333;border-color:rgba(0,0,0,.08)}
-/* 主題色本身只靠 body 類名；不去覆蓋你的任何 class */
+/* 主題色 class（不覆蓋原設計） */
 body.dark{background:#000;color:#fff}
 body.eyecare{background:#121212;color:#E0E0E0}
 body.lightgray{background:#F5F5F5;color:#222}
