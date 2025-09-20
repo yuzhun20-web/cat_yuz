@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant-TW"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>浪人閱讀</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./style.css?v=3">
+<link rel="stylesheet" href="./settings.overlay.css?v=3">
+<meta name="theme-color" content="#000000"/>
+</head>
+<body class="dark">
+  <header class="header">
+    <div class="brand app-title">浪人閱讀</div>
+    <div class="tabs">
+      <div class="tab active">文章庫</div>
+      <div class="tab">文件庫</div>
+      <div class="tab">日常</div>
+    </div>
+  </header>
+  <div class="fab"><button id="btnSettings">⚙︎ 設定</button></div>
+  <main class="list"></main>
+  <article class="article" style="display:none;"></article>
+  <section class="r-sheet" aria-label="外觀設定">
+    <h2>外觀設定</h2>
+    <button class="r-done" id="sheetDone">完成</button>
+    <div class="settings-section-title">主題</div>
+    <div class="r-row">
+      <button class="r-chip" id="themeDark">純黑</button>
+      <button class="r-chip" id="themeEye">護眼</button>
+      <button class="r-chip" id="themeGray">淺灰</button>
+      <button class="r-chip" id="themePaper">紙質</button>
+    </div>
+    <div class="settings-section-title">字級</div>
+    <div class="r-row r-fs">
+      <button class="r-btn" id="rFsMinus">A-</button>
+      <span id="rFsVal">18px</span>
+      <button class="r-btn" id="rFsPlus">A+</button>
+    </div>
+  </section>
+<script src="./settings.overlay.js?v=3"></script>
+<script src="./app.js?v=3"></script>
+</body></html>
