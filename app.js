@@ -221,4 +221,41 @@ setTab('article'); loadList('article');
   }
   if(document.readyState!=='loading') ensureUI(); else document.addEventListener('DOMContentLoaded', ensureUI);
 })();
+// === inline CSS：主題 & 按鈕（避免外部 CSS 沒載入）===
+(function(){
+  const CSS = `
+:root{
+  --paper-bg:#FAF9F6;   --paper-text:#222;
+  --eyeL-bg:#E9F1E7;    --eyeL-text:#222;
+  --eyeD-bg:#1B2B24;    --eyeD-text:#CFCFCF;
+}
+body.theme-paper  #reader, body.theme-paper  .reader, body.theme-paper  .article, body.theme-paper  .article-body, body.theme-paper  .content, body.theme-paper  main{ background:var(--paper-bg)!important;  color:var(--paper-text)!important; }
+body.theme-eyeL   #reader, body.theme-eyeL   .reader, body.theme-eyeL   .article, body.theme-eyeL   .article-body, body.theme-eyeL   .content, body.theme-eyeL   main{ background:var(--eyeL-bg)!important;   color:var(--eyeL-text)!important; }
+body.theme-eyeD   #reader, body.theme-eyeD   .reader, body.theme-eyeD   .article, body.theme-eyeD   .article-body, body.theme-eyeD   .content, body.theme-eyeD   main{ background:var(--eyeD-bg)!important;   color:var(--eyeD-text)!important; }
+body.theme-paper  #reader a, body.theme-eyeL #reader a{ color:#0A5A7A; }
+body.theme-eyeD   #reader a{ color:#7BD3C4; }
+
+.theme-btn{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 10px);
+  right:calc(env(safe-area-inset-right,0px) + 66px);
+  width:44px;height:44px; display:grid; place-items:center;
+  border-radius:16px; background:#0f1113; color:#fff;
+  border:1px solid #1e2227; font-size:20px;
+  z-index:9999; user-select:none; -webkit-tap-highlight-color:transparent;
+}
+.theme-menu{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 60px);
+  right:calc(env(safe-area-inset-right,0px) + 20px);
+  display:none; gap:10px; padding:10px 12px; border-radius:14px;
+  background:#0f1113; border:1px solid #1e2227; z-index:10000;
+}
+.theme-menu.show{ display:flex; }
+.theme-dot{ width:26px;height:26px;border-radius:50%;border:1px solid #1e2227; display:block; }
+.theme-dot.paper{background:#FAF9F6;} .theme-dot.eyeL{background:#E9F1E7;} .theme-dot.eyeD{background:#1B2B24;}
+  `.trim();
+  var s=document.createElement('style'); s.id='theme-inline-css'; s.textContent=CSS;
+  document.head.appendChild(s);
+})();
 
