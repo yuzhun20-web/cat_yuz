@@ -179,83 +179,28 @@ function toast(msg){
 }
 setTab('article'); loadList('article');
 
-// === Theme Injector: paper / eyecare-light / eyecare-dark ===
+/* === HOTFIX v2：修正主題範圍，只影響閱讀內容區 === */
 (function(){
-  const KEY='theme3';
-  const ORDER=['theme-paper','theme-eyeL','theme-eyeD'];
-  function apply(cls){
-    document.body.classList.remove('theme-paper','theme-eyeL','theme-eyeD');
-    if(cls) document.body.classList.add(cls);
-    try{ localStorage.setItem(KEY, cls||''); }catch(e){}
-  }
-  function load(){ try{return localStorage.getItem(KEY)||'';}catch(e){return '';} }
-  apply(load());
+  // 移除舊 inline CSS（若存在）
+  var old = document.getElementById('theme-inline-css');
+  if(old && old.parentNode){ old.parentNode.removeChild(old); }
 
-  function ensureUI(){
-    if(document.querySelector('.theme-btn')) return;
-    const btn=document.createElement('button');
-    btn.className='theme-btn'; btn.type='button'; btn.setAttribute('aria-label','切換主題'); btn.textContent='🌙';
-    document.body.appendChild(btn);
-    const menu=document.createElement('div'); menu.className='theme-menu';
-    menu.innerHTML=`<a class="theme-dot paper"  title="紙質"        data-v="theme-paper"></a>
-                    <a class="theme-dot eyeL"   title="護眼(亮)"    data-v="theme-eyeL"></a>
-                    <a class="theme-dot eyeD"   title="護眼(夜)"    data-v="theme-eyeD"></a>`;
-    document.body.appendChild(menu);
-    let pressTimer=null, menuOpen=false;
-    const cycle=()=>{ const cur=load(); const idx=Math.max(0, ORDER.indexOf(cur)); const next=ORDER[(idx+1)%ORDER.length]; apply(next); toast(next); };
-    const openMenu=()=>{ menu.classList.add('show'); menuOpen=true; };
-    const closeMenu=()=>{ menu.classList.remove('show'); menuOpen=false; };
-    btn.addEventListener('touchstart', e=>{ pressTimer=setTimeout(openMenu,600); }, {passive:true});
-    btn.addEventListener('touchend',   e=>{ if(pressTimer){clearTimeout(pressTimer); if(!menuOpen) cycle();} }, {passive:true});
-    btn.addEventListener('click', e=>{ if(!menuOpen) cycle(); });
-    menu.addEventListener('click', e=>{ const v=e.target?.getAttribute?.('data-v'); if(!v) return; apply(v); closeMenu(); toast(v); });
-    document.addEventListener('click', e=>{ if(menuOpen && !menu.contains(e.target) && e.target!==btn) closeMenu(); });
-  }
-  function toast(v){
-    const map={ 'theme-paper':'紙質', 'theme-eyeL':'護眼（亮）', 'theme-eyeD':'護眼（夜）' };
-    const t=document.createElement('div');
-    t.textContent='已切換為：'+(map[v]||'');
-    Object.assign(t.style,{position:'fixed',left:'50%',transform:'translateX(-50%)',bottom:'calc(env(safe-area-inset-bottom,0px) + 24px)',background:'#0f1113',color:'#fff',padding:'10px 14px',borderRadius:'12px',border:'1px solid #1e2227',fontSize:'14px',zIndex:10001,opacity:'0',transition:'opacity .2s ease'});
-    document.body.appendChild(t);
-    requestAnimationFrame(()=>t.style.opacity='1'); setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),200); }, 1200);
-  }
-  if(document.readyState!=='loading') ensureUI(); else document.addEventListener('DOMContentLoaded', ensureUI);
-})();
-// === inline CSS：主題 & 按鈕（避免外部 CSS 沒載入）===
-(function(){
-  const CSS = `
-:root{
-  --paper-bg:#FAF9F6;   --paper-text:#222;
-  --eyeL-bg:#E9F1E7;    --eyeL-text:#222;
-  --eyeD-bg:#1B2B24;    --eyeD-text:#CFCFCF;
-}
-body.theme-paper  #reader, body.theme-paper  .reader, body.theme-paper  .article, body.theme-paper  .article-body, body.theme-paper  .content, body.theme-paper  main{ background:var(--paper-bg)!important;  color:var(--paper-text)!important; }
-body.theme-eyeL   #reader, body.theme-eyeL   .reader, body.theme-eyeL   .article, body.theme-eyeL   .article-body, body.theme-eyeL   .content, body.theme-eyeL   main{ background:var(--eyeL-bg)!important;   color:var(--eyeL-text)!important; }
-body.theme-eyeD   #reader, body.theme-eyeD   .reader, body.theme-eyeD   .article, body.theme-eyeD   .article-body, body.theme-eyeD   .content, body.theme-eyeD   main{ background:var(--eyeD-bg)!important;   color:var(--eyeD-text)!important; }
-body.theme-paper  #reader a, body.theme-eyeL #reader a{ color:#0A5A7A; }
-body.theme-eyeD   #reader a{ color:#7BD3C4; }
-
-.theme-btn{
-  position:fixed;
-  top:calc(env(safe-area-inset-top,0px) + 10px);
-  right:calc(env(safe-area-inset-right,0px) + 66px);
-  width:44px;height:44px; display:grid; place-items:center;
-  border-radius:16px; background:#0f1113; color:#fff;
-  border:1px solid #1e2227; font-size:20px;
-  z-index:9999; user-select:none; -webkit-tap-highlight-color:transparent;
-}
-.theme-menu{
-  position:fixed;
-  top:calc(env(safe-area-inset-top,0px) + 60px);
-  right:calc(env(safe-area-inset-right,0px) + 20px);
-  display:none; gap:10px; padding:10px 12px; border-radius:14px;
-  background:#0f1113; border:1px solid #1e2227; z-index:10000;
-}
-.theme-menu.show{ display:flex; }
-.theme-dot{ width:26px;height:26px;border-radius:50%;border:1px solid #1e2227; display:block; }
+  // 注入新的 scoped CSS（v2）
+  var css = `
+:root{ --paper-bg:#FAF9F6; --paper-text:#222; --eyeL-bg:#E9F1E7; --eyeL-text:#222; --eyeD-bg:#1B2B24; --eyeD-text:#CFCFCF; }
+body.theme-paper main, body.theme-eyeL main, body.theme-eyeD main{ background:#0f1113 !important; color:#fff !important; }
+body.theme-paper  #reader, body.theme-paper  .reader, body.theme-paper  .article, body.theme-paper  .article-body, body.theme-paper  .post, body.theme-paper  .entry, body.theme-paper  .markdown-body{ background:var(--paper-bg) !important; color:var(--paper-text) !important; }
+body.theme-eyeL   #reader, body.theme-eyeL   .reader, body.theme-eyeL   .article, body.theme-eyeL   .article-body, body.theme-eyeL   .post, body.theme-eyeL   .entry, body.theme-eyeL   .markdown-body{ background:var(--eyeL-bg) !important; color:var(--eyeL-text) !important; }
+body.theme-eyeD   #reader, body.theme-eyeD   .reader, body.theme-eyeD   .article, body.theme-eyeD   .article-body, body.theme-eyeD   .post, body.theme-eyeD   .entry, body.theme-eyeD   .markdown-body{ background:var(--eyeD-bg) !important; color:var(--eyeD-text) !important; }
+body.theme-paper  #reader a, body.theme-paper  .reader a, body.theme-paper  .article a, body.theme-paper  .article-body a, body.theme-paper  .post a, body.theme-paper  .entry a, body.theme-paper  .markdown-body a{ color:#0A5A7A; }
+body.theme-eyeL   #reader a, body.theme-eyeL   .reader a, body.theme-eyeL   .article a, body.theme-eyeL   .article-body a, body.theme-eyeL   .post a, body.theme-eyeL   .entry a, body.theme-eyeL   .markdown-body a{ color:#0A5A7A; }
+body.theme-eyeD   #reader a, body.theme-eyeD   .reader a, body.theme-eyeD   .article a, body.theme-eyeD   .article-body a, body.theme-eyeD   .post a, body.theme-eyeD   .entry a, body.theme-eyeD   .markdown-body a{ color:#7BD3C4; }
+.theme-btn{ position:fixed; top:calc(env(safe-area-inset-top,0px) + 10px); right:calc(env(safe-area-inset-right,0px) + 66px); width:44px;height:44px; display:grid; place-items:center; border-radius:16px; background:#0f1113; color:#fff; border:1px solid #1e2227; font-size:20px; z-index:9999; user-select:none; -webkit-tap-highlight-color:transparent; }
+.theme-menu{ position:fixed; top:calc(env(safe-area-inset-top,0px) + 60px); right:calc(env(safe-area-inset-right,0px) + 20px); display:none; gap:10px; padding:10px 12px; border-radius:14px; background:#0f1113; border:1px solid #1e2227; z-index:10000; }
+.theme-menu.show{ display:flex; } .theme-dot{ width:26px;height:26px;border-radius:50%;border:1px solid #1e2227; display:block; }
 .theme-dot.paper{background:#FAF9F6;} .theme-dot.eyeL{background:#E9F1E7;} .theme-dot.eyeD{background:#1B2B24;}
   `.trim();
-  var s=document.createElement('style'); s.id='theme-inline-css'; s.textContent=CSS;
+  var s=document.createElement('style'); s.id='theme-inline-css-v2'; s.textContent=css;
   document.head.appendChild(s);
 })();
 
